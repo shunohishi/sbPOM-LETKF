@@ -1,0 +1,25 @@
+sbPOM code files
+
+sbpom version.110910 [version 0 by Jordi and Wang (2012)]
+sbpom version.220301 [version 1 by Ohishi et al. (2022)]
+      * fix MPI communication, and add TS budget, COARE version 3.5, add JRA55do
+
+1. pom.f: main program
+
+2. initialize.f: set the seamount problem
+
+3. advance.f: advance sbPOM in time
+
+4. solver.f: main subroutines
+
+5. parallel_mpi.f: communicate between processors 
+
+requires MPICH2
+
+http://www.mcs.anl.gov/mpi/mpich2
+
+6. io_pnetcdf.F: input/output
+
+requires Parallel Netcdf (parallel version of Unidata's NetCDF library)
+
+http://trac.mcs.anl.gov/projects/parallel-netcdf
