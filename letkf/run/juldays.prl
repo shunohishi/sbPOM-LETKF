@@ -1,0 +1,66 @@
+#!/usr/bin/perl
+
+$JUL1=$ARGV[0]; $JUL2=$ARGV[1]; 
+
+caldat($JUL2+$JUL1,*year,*month,*day);
+
+if($month < 10 and $day < 10){
+    printf("%04d%1s%01d%1s%01d",$year," ",$month," ",$day);
+}elsif($month < 10 and $day >= 10) {
+    printf("%04d%1s%01d%1s%02d",$year," ",$month," ",$day);
+}elsif($month >= 10 and $day < 10) {
+    printf("%04d%1s%02d%1s%01d",$year," ",$month," ",$day);
+}elsif($month >= 10 and $day >= 10) {
+    printf("%04d%1s%02d%1s%02d",$year," ",$month," ",$day);
+}
+
+### end
+
+sub caldat {
+    local($julian,*yy,*mm,*dd) = @_;
+    
+    $igreg= 2299161;
+    if( $julian >= $igreg ){
+        $jalpha= int( ( ($julian-1867216) -0.25 )/36524.25 );
+        $ja= $julian +1 +$jalpha -int(0.25*$jalpha);
+    } else {
+        $ja= $julian;
+    };
+    $jb= $ja+1524;
+    $jc= int( 6680. +( ($jb -2439870) -122.1 )/365.25 );
+    $jd= 365*$jc +int(0.25*$jc);
+    $je= int( ($jb-$jd)/30.6001 );
+    $dd= $jb -$jd -int(30.6001*$je);
+    $mm= $je-1;
+    if( $mm>12 ){
+        $mm= $mm-12;
+    };    
+    $yy= $jc-4715;
+    if( $mm>2 ){
+        $yy= $yy-1;
+    };
+    if( $yy<=0 ){
+        $yy= $yy-1;
+    };
+};
+
+sub julday{
+    local($yy,$mm,$dd)=@_;
+
+    $igreg= 15+31*(10+12*1582);
+    if( $yy<0 ){ $yy= $yy+1 };
+    if( $mm>2 ){
+        $jy= $yy;
+        $jm= $mm+1;
+    } else {
+        $jy= $yy-1;
+        $jm= $mm+13;
+    };
+    $julday= int(365.25*$jy) +int(30.6001*$jm) +$dd +1720995;
+    if( $dd+31*($mm+12*$yy)>$igreg ){
+        $ja= int(0.01*$jy);
+        $julday= $julday +2 -$ja +int(0.25*$ja);
+    };
+};
+
+
